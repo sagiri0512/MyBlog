@@ -7,6 +7,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -22,27 +23,14 @@ import java.util.List;
  */
 @Repository
 public class ProjectDaoImpl implements ProjectDao {
-    static SqlSessionFactory sqlSessionFactory;
-    public ProjectDaoImpl() {
-        try {
-            setUp();
-        } catch (IOException e) {
-            System.out.println(e);
-            e.printStackTrace();
-        }
-    }
-    private void setUp() throws IOException {//找配置文件
-        String resource = "mybatis-config.xml";
-        InputStream inputStream = Resources.getResourceAsStream(resource);
-        sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-    }
 
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
 
     @Override
     public List<Project> getAllProject() {//getAllProject() 为获取project表的全部数据
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        ProjectMapper projectMapper =   sqlSession.getMapper(ProjectMapper.class);
-        try{
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()){
+            ProjectMapper projectMapper =   sqlSession.getMapper(ProjectMapper.class);
             return projectMapper.getAllProject();
         }catch (Exception e){
             System.out.println(e);

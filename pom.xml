@@ -185,7 +185,6 @@
             <version>2.0.6</version>
         </dependency>
 
-
         <!-- Log4j渚濊禆 -->
         <dependency>
             <groupId>log4j</groupId>
@@ -224,6 +223,12 @@
             <artifactId>junit-jupiter</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

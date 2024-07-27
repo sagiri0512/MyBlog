@@ -2,13 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            https://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/context
                            https://www.springframework.org/schema/context/spring-context.xsd
                            http://www.springframework.org/schema/mvc
-                           https://www.springframework.org/schema/mvc/spring-mvc.xsd"> 
+                           https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
     
     <!-- 启用注解支持 -->
     <mvc:annotation-driven/>
@@ -19,6 +19,18 @@
     <context:component-scan base-package="com.sagiri.blog.dao"/>
     <context:component-scan base-package="com.sagiri.blog.mapper"/>
     <context:component-scan base-package="com.sagiri.blog.entity"/>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/> <!-- 或其他数据库驱动 -->
+        <property name="url" value="jdbc:mysql://localhost:3306/myproject?serverTimezone=Asia/Shanghai"/> <!-- 数据库 URL -->
+        <property name="username" value="root"/> <!-- 数据库用户名 -->
+        <property name="password" value="kong123456"/> <!-- 数据库密码 -->
+    </bean>
 
     <!-- 视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

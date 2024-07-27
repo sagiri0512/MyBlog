@@ -72,6 +72,7 @@
     <h1 class="text-center">我参与的项目</h1>
     <div>
         <a href="/blog/index/index">首页</a>
+        <a href="/blog/common/common">常用</a>
         <a href="https://github.com/sagiri0512">仓库</a>
         <a href="/blog/myProject/myProject">项目</a>
     </div>
