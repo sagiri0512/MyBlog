@@ -3,13 +3,22 @@ package com.sagiri.blog.dao;
 import com.sagiri.blog.entity.Project;
 
 import java.util.List;
+
 /**
+ * 数据访问对象（DAO）接口，用于对project表进行操作
+ *
  * @author Sagiri
- * 创建于24/07/24
- * 此为对project表操作的dao层
- * getAllProject() 为获取project表的全部数据
- * 最后修改 24/07/24
+ * @version 1.0
+ * @since 2024/07/24
+ *
+ * @see Project
  */
 public interface ProjectDao {
-    List<Project> getAllProject();//getAllProject() 为获取project表的全部数据
+
+    /**
+     * 获取project表中所有的项目数据
+     *
+     * @return 包含所有项目数据的列表
+     */
+    List<Project> getAllProject();
 }

@@ -1,5 +1,7 @@
 package com.sagiri.blog.controller;
 
+import com.sagiri.blog.dto.Result;
+import com.sagiri.blog.entity.Common;
 import com.sagiri.blog.entity.Project;
 import com.sagiri.blog.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,26 +13,43 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 /**
+ * 控制器类，用于处理与项目相关的请求
+ *
  * @author Sagiri
- * 创建于24/07/24
- * 此Controller用于处理myProject.jsp页面的请求
- * myProject()用于重定向到myProject.jsp
- * 最后修改 24/07/24
+ * @version 1.0
+ * @since 2024/07/24
  */
 @Controller
 @RequestMapping("/blog/myProject")
 public class MyProjectController {
+
     @Autowired
     private ProjectService projectService;
 
-    @GetMapping("/myProject")//myProject()用于重定向到myProject.jsp
-    public String myProject(){
+    /**
+     * 处理访问myProject页面的请求
+     *
+     * @return 视图名称，用于重定向到myProject.jsp页面
+     */
+    @GetMapping("/myProject")
+    public String myProject() {
         return "myProject";
     }
 
+    /**
+     * 获取所有项目数据
+     *
+     * @return 包含所有项目数据的列表。如果获取失败，则返回错误信息
+     */
     @GetMapping("/getAllProject")
     @ResponseBody
-    public List<Project> getAllProject(){
-        return projectService.getAllProject();
+    public Result getAllProject() {
+        try {
+            return Result.success(projectService.getAllProject());
+        } catch (Exception e) {
+            // 在日志中记录异常
+            e.printStackTrace();
+            return Result.error("获取失败: " + e.getMessage());
+        }
     }
 }

@@ -99,16 +99,20 @@
             url: "/blog/myProject/getAllProject",
             type: "GET",
             success: function (res) {
-                const projectTableBody = $("#projectTableBody");
-                res.forEach(function (project) {
-                    var row = '<tr class="active">';
-                    row += '<td>' + project.projectName + '</td>';
-                    row += '<td>' + project.projectSynopsis + '</td>';
-                    row += '<td><a href="' + project.projectSource + '" target="_blank">源码</a></td>';
-                    row += '<td><a href="' + project.projectUrl + '" target="_blank">访问</a></td>';
-                    row += '</tr>';
-                    projectTableBody.append(row);
-                });
+                if (res.code == 0) {
+                    const projectTableBody = $("#projectTableBody");
+                    res.data.forEach(function (project) {
+                        var row = '<tr class="active">';
+                        row += '<td>' + project.projectName + '</td>';
+                        row += '<td>' + project.projectSynopsis + '</td>';
+                        row += '<td><a href="' + project.projectSource + '" target="_blank">源码</a></td>';
+                        row += '<td><a href="' + project.projectUrl + '" target="_blank">访问</a></td>';
+                        row += '</tr>';
+                        projectTableBody.append(row);
+                    });
+                }else{
+                    alert(res.message)
+                }
             },
             error: function (err) {
                 console.error("请求失败：", err);

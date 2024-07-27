@@ -52,24 +52,11 @@
             font-size: 1.5rem; /* 调整标题字体大小 */
             margin: 0; /* 去除默认的外边距 */
         }
-        /* 页面内容 */
-        .container {
-            padding-top: 80px; /* 使内容不会被固定导航栏遮挡 */
-            text-align: center; /* 居中对齐文本 */
-        }
-        .container h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: #4b0082; /* 设置标题颜色 */
-        }
-        .container h3 {
-            font-size: 1.5rem;
-            color: #4b0082; /* 设置副标题颜色 */
-        }
         /* 搜索框样式 */
         .search-container {
             text-align: center;
             margin-top: 100px; /* 确保搜索框位于导航栏下方 */
+            color: #4b0082; /* 设置副标题颜色 */
         }
         .search-box {
             display: flex;
@@ -105,6 +92,26 @@
         .search-box button i {
             font-size: 1rem;
         }
+        .problem-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+        .problem-item {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .problem-item p {
+            margin: 0;
+            font-size: 1.2rem;
+        }
         /* 响应式设计 */
         @media (max-width: 768px) {
             nav {
@@ -138,7 +145,7 @@
     </div>
 </nav>
 
-<!-- 搜索框 -->
+<!-- 主体 -->
 <div class="search-container">
     <div class="search-box">
         <input type="text" placeholder="搜索...">
@@ -146,7 +153,35 @@
             <i class="fa fa-search"></i>
         </button>
     </div>
+    <!-- 问题展示区域 -->
+    <div class="problem-container" id="problem-container">
+        <!-- 问题项会被动态添加到这里 -->
+    </div>
 </div>
+<script>
+    $(function () {
+        $.ajax({
+            url: "/blog/common/getProblem",
+            type: "GET",
+            success: function (res) {
+                if (res.code == 0) {
+                    var data = res.data;
+                    var container = $('#problem-container');
 
+                    // 遍历数据并生成 HTML
+                    for (var i = 0; i < data.length; i++) {
+                        var item = data[i];
+                        var problemDiv = '<div class="problem-item">' +
+                            '<p>' + item.problem + '</p>' +
+                            '</div>';
+                        container.append(problemDiv);
+                    }
+                } else {
+                    alert(res.message);
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>
