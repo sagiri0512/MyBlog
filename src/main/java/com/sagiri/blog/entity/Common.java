@@ -15,7 +15,7 @@ public class Common {
   /**
    * 问题的唯一标识符
    */
-  private long id;
+  private Integer id;
 
   /**
    * 问题描述

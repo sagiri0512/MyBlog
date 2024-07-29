@@ -1,4 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>常用代码</title>
@@ -87,7 +89,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 37.6px;/* 确保按钮和输入框的高度一致 */
+            height: 37.6px; /* 确保按钮和输入框的高度一致 */
         }
         .search-box button i {
             font-size: 1rem;
@@ -148,8 +150,8 @@
 <!-- 主体 -->
 <div class="search-container">
     <div class="search-box">
-        <input type="text" placeholder="搜索...">
-        <button type="button">
+        <input type="text" id="search-input" placeholder="搜索...">
+        <button type="button" id="search-button">
             <i class="fa fa-search"></i>
         </button>
     </div>
@@ -159,26 +161,66 @@
     </div>
 </div>
 <script>
+    // 定义一个函数来处理问题数据的渲染和事件绑定
+    function handleProblemData(res) {
+        if (res.code === 0) {
+            var data = res.data;
+            var container = $('#problem-container');
+            container.empty(); // 清空之前的内容
+
+            // 遍历数据并生成 HTML
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                var problemDiv = '<div class="problem-item" data-id="' + item.id + '">' +
+                    '<p>' + item.problem + '</p>' +
+                    '</div>';
+                container.append(problemDiv);
+            }
+
+            // 为每个问题项绑定点击事件
+            $('.problem-item').on('click', function () {
+                var id = $(this).data('id');
+                routingClick(id);
+            });
+        } else {
+            alert(res.message);
+        }
+    }
+
+    // 从服务器获取问题数据的函数
+    function fetchProblems(query) {
+        $.ajax({
+            url: "/blog/common/getLikeProblem",
+            type: "GET",
+            data: { problem: query },
+            success: handleProblemData
+        });
+    }
+
+    function routingClick(id) {
+        // 跳转到显示答案的页面，URL 中包含问题 ID 作为参数
+        window.location.href = "/blog/answerPage/getAnswer?id=" + id;
+    }
+
+    // 使用 jQuery 的 $ 函数来初始化 AJAX 请求
     $(function () {
         $.ajax({
             url: "/blog/common/getProblem",
             type: "GET",
-            success: function (res) {
-                if (res.code == 0) {
-                    var data = res.data;
-                    var container = $('#problem-container');
+            success: handleProblemData // 调用提取出来的函数处理成功响应
+        });
 
-                    // 遍历数据并生成 HTML
-                    for (var i = 0; i < data.length; i++) {
-                        var item = data[i];
-                        var problemDiv = '<div class="problem-item">' +
-                            '<p>' + item.problem + '</p>' +
-                            '</div>';
-                        container.append(problemDiv);
-                    }
-                } else {
-                    alert(res.message);
-                }
+        // 绑定搜索按钮点击事件
+        $('#search-button').on('click', function () {
+            var query = $('#search-input').val();
+            fetchProblems(query);
+        });
+
+        // 绑定输入框的回车事件
+        $('#search-input').on('keypress', function (e) {
+            if (e.which == 13) { // 回车键
+                var query = $('#search-input').val();
+                fetchProblems(query);
             }
         });
     });

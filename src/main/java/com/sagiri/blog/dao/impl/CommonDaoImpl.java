@@ -42,4 +42,35 @@ public class CommonDaoImpl implements CommonDao {
             return null;
         }
     }
+    /**
+     * 获取问题和答案
+     * @param id 问题的 ID
+     * @return 问题和答案。如果查询失败，则返回null。
+     */
+    @Override
+    public Common getAnswer(Integer id) {
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()){
+            CommonMapper commonMapper = sqlSession.getMapper(CommonMapper.class);
+            return commonMapper.getAnswer(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    /**
+     * 使用LIKE查询获取问题信息
+     *
+     * @param problem 用于匹配的关键字
+     * @return 包含匹配问题的 Common 对象列表
+     */
+    @Override
+    public List<Common> getLikeProblem(String problem) {
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()){
+            CommonMapper commonMapper = sqlSession.getMapper(CommonMapper.class);
+            return commonMapper.getLikeProblem(problem);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

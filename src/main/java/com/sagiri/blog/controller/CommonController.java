@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -45,6 +46,22 @@ public class CommonController {
     public Result getProblem() {
         try {
             return Result.success(commonService.getProblem());
+        } catch (Exception e) {
+            // 在日志中记录异常
+            e.printStackTrace();
+            return Result.error("获取失败: " + e.getMessage());
+        }
+    }
+    /**
+     * 获取按关键字搜索的内容
+     *
+     * @return 包含搜索问题的结果对象。如果获取失败，则返回错误信息
+     */
+    @GetMapping("/getLikeProblem")
+    @ResponseBody
+    public Result getLikeProblem(@RequestParam String problem){
+        try {
+            return Result.success(commonService.getLikeProblem(problem));
         } catch (Exception e) {
             // 在日志中记录异常
             e.printStackTrace();

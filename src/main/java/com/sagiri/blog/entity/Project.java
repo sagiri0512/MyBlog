@@ -15,7 +15,7 @@ public class Project {
   /**
    * 项目的唯一标识符
    */
-  private long projectId;
+  private Integer projectId;
 
   /**
    * 项目的名称
